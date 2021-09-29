@@ -24,7 +24,13 @@ jobs:
     name: Build and deploy
     runs-on: ubuntu-latest
     steps:
-
+    
+    - name : Configure las credenciales de AWS 
+      uses : aws-actions / configure-aws-credentials @ v1 
+      with: 
+         aws-access-key-id : $ {{secrets.AWS_ACCESS_KEY_ID}} 
+         aws-secret-access-key : $ {{secretos. AWS_SECRET_ACCESS_KEY}} 
+         región-aws : us-east-2
     - name: Checkout
       uses: actions/checkout@master
 
@@ -36,7 +42,7 @@ jobs:
       working-directory: ${{env.working-directory}}
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: co-example1-ecr
+        ECR_REPOSITORY: ecrpp
         IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
